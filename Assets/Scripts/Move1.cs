@@ -11,6 +11,7 @@ public class Move1 : MonoBehaviour
     public float DragTime;
     private bool _inStation;
     public float Acceleration;
+    private bool _directed;
 
     private void Start()
     {
@@ -18,6 +19,7 @@ public class Move1 : MonoBehaviour
         DragTime = 0;
         _inStation = true;
         Acceleration = 1000f;
+        _directed = false;
     }
 
     private void OnMouseDown()
@@ -34,6 +36,12 @@ public class Move1 : MonoBehaviour
         {
             _mousePosChange = Input.mousePosition;
             DragTime += Time.deltaTime;
+            if (_directed == false && DragTime >= 0.1)
+            {
+                Direction = SetDirection(_mousePosition, _mousePosChange);
+                _directed = true;
+            }
+
         }
     }
 
@@ -41,12 +49,12 @@ public class Move1 : MonoBehaviour
     {
         if (_inStation)
         {
-            _mousePosChange = Input.mousePosition;
-            Direction = SetDirection(_mousePosition, _mousePosChange);
-            Debug.Log(Direction * DragTime * Acceleration);
+            Debug.Log(Direction);
             _rigidbody.AddForce(Direction * DragTime * Acceleration, ForceMode.Force);
             _rigidbody.useGravity = true;
             DragTime = 0;
+            _directed = false;
+            Direction = Vector3.zero;
             _inStation = false;
         }
     }

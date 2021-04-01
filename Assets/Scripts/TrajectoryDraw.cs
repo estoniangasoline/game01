@@ -23,7 +23,11 @@ public class TrajectoryDraw : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        Debug.Log(_move1.Direction);
-        _lineRenderer.SetPosition(1, _move1.Direction * _move1.DragTime);
+        _lineRenderer.SetPosition(1, _move1.Direction * _move1.DragTime * _move1.Acceleration);
+    }
+
+    private void OnMouseUp()
+    {
+        _lineRenderer.SetPosition(1, _rigidbody.position);
     }
 }
